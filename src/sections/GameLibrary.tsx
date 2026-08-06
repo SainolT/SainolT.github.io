@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { games, type Game } from '../data/games'
 import { useReveal } from '../hooks/useReveal'
-import GameDetail from '../components/GameDetail'
 
 /** 单张游戏档案卡：票根造型 + 微微倾斜 + CSS 艺术封面 */
 function GameCard({
@@ -82,8 +80,7 @@ function GameCard({
   )
 }
 
-export default function GameLibrary() {
-  const [active, setActive] = useState<Game | null>(null)
+export default function GameLibrary({ onOpenGame }: { onOpenGame: (game: Game) => void }) {
   const headRef = useReveal<HTMLDivElement>()
   const tilts = [-1.2, 0.8, -0.6]
 
@@ -115,7 +112,7 @@ export default function GameLibrary() {
             key={game.id}
             game={game}
             tilt={tilts[i % tilts.length]}
-            onOpen={() => setActive(game)}
+            onOpen={() => onOpenGame(game)}
           />
         ))}
       </div>
@@ -126,8 +123,6 @@ export default function GameLibrary() {
         更多世界构筑中
         <span className="h-px w-16 bg-[#D8CBB8]" />
       </div>
-
-      <GameDetail game={active} onClose={() => setActive(null)} />
     </section>
   )
 }

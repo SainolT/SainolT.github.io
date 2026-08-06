@@ -4,6 +4,8 @@ import type { Game } from '../data/games'
 interface Props {
   game: Game | null
   onClose: () => void
+  /** 为 true 时直接打开试玩页签并加载游戏 */
+  autoPlay?: boolean
 }
 
 const statusStyle: Record<Game['status'], string> = {
@@ -12,15 +14,17 @@ const statusStyle: Record<Game['status'], string> = {
   概念案: 'bg-[#D9A679] text-[#3E3128]',
 }
 
-export default function GameDetail({ game, onClose }: Props) {
+export default function GameDetail({ game, onClose, autoPlay }: Props) {
   const [tab, setTab] = useState<'archive' | 'play'>('archive')
   const [launched, setLaunched] = useState(false)
 
-  // 每次切换游戏时重置
+  // 每次打开时按入口决定初始视图
   useEffect(() => {
-    setTab('archive')
-    setLaunched(false)
-  }, [game?.id])
+    if (!game) return
+    const straightToPlay = Boolean(autoPlay && game.playUrl)
+    setTab(straightToPlay ? 'play' : 'archive')
+    setLaunched(straightToPlay)
+  }, [game, autoPlay])
 
   // Esc 关闭 + 锁定背景滚动
   useEffect(() => {
@@ -106,7 +110,7 @@ export default function GameDetail({ game, onClose }: Props) {
         </div>
 
         {/* 内容 */}
-        <div className="thin-scroll flex-1 overflow-y-auto px-6 py-6 md:px-9">
+        <div className="thin-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6 md:px-9">
           {tab === 'archive' ? (
             <div className="grid gap-8 md:grid-cols-[1fr_240px]">
               <div>

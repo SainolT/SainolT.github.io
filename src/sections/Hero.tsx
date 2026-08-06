@@ -1,3 +1,6 @@
+import BlocksToy from '../components/BlocksToy'
+import PressStartButton from '../components/PressStartButton'
+
 const marqueeItems = [
   '关卡设计',
   '系统设计',
@@ -9,51 +12,7 @@ const marqueeItems = [
   'SYSTEM DESIGN',
 ]
 
-function SpinBadge() {
-  return (
-    <div className="relative h-28 w-28 md:h-36 md:w-36">
-      <svg viewBox="0 0 100 100" className="animate-spin-slow h-full w-full">
-        <defs>
-          <path id="badge-circle" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-        </defs>
-        <text className="fill-[#8F5638]" style={{ fontSize: 9.2, letterSpacing: 2.2 }}>
-          <textPath href="#badge-circle">PRESS START · 按任意键开始 · PRESS START ·</textPath>
-        </text>
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-display text-2xl italic text-[#A6623F] md:text-3xl">▶</span>
-      </div>
-    </div>
-  )
-}
-
-/** 陶土拱门里的微缩场景：落日、远山、漂浮的几何体 */
-function ArchScene() {
-  return (
-    <div className="relative h-[420px] w-[260px] overflow-hidden rounded-t-full border border-[#D8CBB8] bg-gradient-to-b from-[#E8C9A0] via-[#DCA97C] to-[#C17E5B] shadow-[0_24px_60px_-24px_rgba(143,86,56,0.55)] md:h-[520px] md:w-[340px]">
-      {/* 落日 */}
-      <div className="animate-floaty absolute left-1/2 top-[22%] h-24 w-24 -translate-x-1/2 rounded-full bg-[#F6E3BC] shadow-[0_0_60px_20px_rgba(246,227,188,0.65)] md:h-32 md:w-32" />
-      {/* 远山 */}
-      <div className="absolute bottom-0 left-[-20%] h-[38%] w-[80%] rounded-t-full bg-[#A6623F]/70" />
-      <div className="absolute bottom-0 right-[-25%] h-[30%] w-[90%] rounded-t-full bg-[#8F5638]/80" />
-      {/* 漂浮几何 */}
-      <div className="animate-drift absolute left-[18%] top-[14%] h-4 w-4 rotate-45 bg-[#F3ECE1]/80" />
-      <div
-        className="animate-drift absolute right-[16%] top-[38%] h-3 w-3 rounded-full bg-[#F3ECE1]/70"
-        style={{ animationDelay: '-3s' }}
-      />
-      <div
-        className="animate-drift absolute left-[26%] top-[52%] h-2.5 w-2.5 rounded-full bg-[#F6E3BC]/90"
-        style={{ animationDelay: '-6s' }}
-      />
-      {/* 底部地平线条 */}
-      <div className="absolute bottom-[18%] left-1/2 h-px w-3/4 -translate-x-1/2 bg-[#F3ECE1]/40" />
-      <div className="absolute bottom-[14%] left-1/2 h-px w-1/2 -translate-x-1/2 bg-[#F3ECE1]/30" />
-    </div>
-  )
-}
-
-export default function Hero() {
+export default function Hero({ onPlayStart }: { onPlayStart: () => void }) {
   return (
     <header className="relative flex min-h-screen flex-col overflow-hidden">
       {/* 顶栏 */}
@@ -78,7 +37,7 @@ export default function Hero() {
         </a>
       </div>
 
-      {/* 主体：左文右拱门的非对称构图 */}
+      {/* 主体：左文右积木板的非对称构图 */}
       <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-6 md:px-12">
         {/* 左侧竖排 */}
         <div className="absolute left-0 top-1/2 hidden -translate-y-1/2 items-center gap-4 lg:flex">
@@ -106,39 +65,68 @@ export default function Hero() {
             一名<span className="font-serif-sc font-bold text-[#3E3128]">游戏策划</span>。
             这里收录我设计的游戏，和写下的拆解。
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-4">
-            <a
-              href="#library"
-              className="group rounded-full bg-[#3E3128] px-7 py-3 text-sm tracking-[0.25em] text-[#F3ECE1] transition-transform hover:-translate-y-0.5"
-            >
-              进入游戏库
-              <span className="ml-2 inline-block transition-transform group-hover:translate-y-0.5">↓</span>
-            </a>
-            <a
-              href="#archive"
-              className="rounded-full border border-[#3E3128]/30 px-7 py-3 text-sm tracking-[0.25em] text-[#3E3128] transition-colors hover:bg-[#3E3128] hover:text-[#F3ECE1]"
-            >
-              档案馆 →
-            </a>
-            <span className="text-xs tracking-widest text-[#8A7B6C]">
-              {`{ 持续收录中 }`}
-            </span>
+          {/* 按钮区：点阵花纹底 + 主深次浅三个纸质按钮 */}
+          <div className="relative mt-10 self-start">
+            <div
+              aria-hidden
+              className="absolute -inset-x-7 -inset-y-6 rounded-[28px]"
+              style={{
+                backgroundImage:
+                  'radial-gradient(rgba(166,98,63,0.14) 1.5px, transparent 2.2px)',
+                backgroundSize: '17px 17px',
+              }}
+            />
+            <div className="relative flex flex-wrap items-center gap-4">
+              {/* 主按钮：深色 + 前置图标 */}
+              <a
+                href="#library"
+                className="group relative flex items-center gap-3 rounded-2xl bg-[#3E3128] px-6 py-4 shadow-[0_5px_0_#D8CBB8,0_16px_30px_-14px_rgba(44,35,27,0.6)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_7px_0_#D8CBB8,0_22px_36px_-14px_rgba(44,35,27,0.65)] active:translate-y-0.5 active:shadow-[0_2px_0_#D8CBB8]"
+              >
+                <span className="pointer-events-none absolute inset-1.5 rounded-xl border border-dashed border-[#F3ECE1]/25" />
+                <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#C17E5B] shadow-[inset_0_-3px_0_rgba(62,49,40,0.25)] transition-transform duration-300 group-hover:scale-110">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="#F6EFE4" aria-hidden>
+                    <path d="M7.5 6h9a5.5 5.5 0 0 1 5.5 5.5v2.25a3.25 3.25 0 0 1-5.66 2.2L14.6 14H9.4l-1.74 1.95A3.25 3.25 0 0 1 2 13.75V11.5A5.5 5.5 0 0 1 7.5 6Zm.5 3v1.5H6.5a.75.75 0 0 0 0 1.5H8v1.5a.75.75 0 0 0 1.5 0V12h1.5a.75.75 0 0 0 0-1.5H9.5V9A.75.75 0 0 0 8 9Zm8.25.75a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Zm2.1 2.1a.9.9 0 1 0 0 1.8.9.9 0 0 0 0-1.8Z" />
+                  </svg>
+                </span>
+                <span className="relative text-left">
+                  <span className="font-serif-sc block text-base font-bold tracking-[0.2em] text-[#F3ECE1]">
+                    进入游戏库
+                  </span>
+                  <span className="font-display block text-[10px] italic tracking-[0.3em] text-[#F3ECE1]/55">
+                    GAME LIBRARY
+                  </span>
+                </span>
+              </a>
+              <a
+                href="#archive"
+                className="group relative flex items-center gap-3 rounded-2xl bg-[#3E3128] px-6 py-4 shadow-[0_5px_0_#D8CBB8,0_16px_30px_-14px_rgba(44,35,27,0.6)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_7px_0_#D8CBB8,0_22px_36px_-14px_rgba(44,35,27,0.65)] active:translate-y-0.5 active:shadow-[0_2px_0_#D8CBB8]"
+              >
+                <span className="pointer-events-none absolute inset-1.5 rounded-xl border border-dashed border-[#F3ECE1]/25" />
+                <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#C17E5B] shadow-[inset_0_-3px_0_rgba(62,49,40,0.25)] transition-transform duration-300 group-hover:scale-110">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="#F6EFE4" aria-hidden>
+                    <path d="M4 3h16a1 1 0 0 1 1 1v3.5H3V4a1 1 0 0 1 1-1Zm-1 6.5h18V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9.5Zm6.5 3a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5h-5Z" />
+                  </svg>
+                </span>
+                <span className="relative text-left">
+                  <span className="font-serif-sc block text-base font-bold tracking-[0.2em] text-[#F3ECE1]">
+                    档案馆
+                  </span>
+                  <span className="font-display block text-[10px] italic tracking-[0.3em] text-[#F3ECE1]/55">
+                    DOCUMENTS
+                  </span>
+                </span>
+              </a>
+            </div>
+            {/* 次按钮 */}
+            <div className="relative mt-5">
+              <PressStartButton onClick={onPlayStart} />
+            </div>
           </div>
         </div>
 
-        {/* 右侧拱门 + 旋转徽章 */}
+        {/* 右侧积木拼图画布 */}
         <div className="relative z-10 mr-2 hidden shrink-0 md:block">
-          <ArchScene />
-          <div className="absolute -left-16 bottom-10">
-            <SpinBadge />
-          </div>
-        </div>
-
-        {/* 移动端拱门缩小版 */}
-        <div className="absolute -right-16 top-6 opacity-90 md:hidden">
-          <div className="origin-top-right scale-[0.42]">
-            <ArchScene />
-          </div>
+          <BlocksToy />
         </div>
       </div>
 

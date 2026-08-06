@@ -27,13 +27,13 @@ export default function ArticleReader({ article, onClose }: Props) {
   const color = typeColor[article.type]
 
   return (
-    <div className="fixed inset-0 z-[100]">
+    <div className="fixed inset-0 z-[100] flex items-end justify-center md:items-center md:p-6">
       <button
         aria-label="关闭"
         onClick={onClose}
         className="animate-overlay-in absolute inset-0 cursor-default bg-[#2C231B]/50 backdrop-blur-sm"
       />
-      <div className="animate-sheet-in grain absolute inset-x-0 bottom-0 top-[4vh] mx-auto flex max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-[#D8CBB8] bg-[#F6F0E4] md:top-[6vh]">
+      <div className="animate-sheet-in grain relative flex h-[94vh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-[#D8CBB8] bg-[#F6F0E4] md:h-[88vh] md:rounded-3xl">
         {/* 元信息栏 */}
         <div className="flex flex-none items-center justify-between gap-4 border-b border-[#E0D4C0] bg-[#EFE6D4]/80 px-6 py-3.5 md:px-10">
           <div className="flex items-center gap-3 text-xs tracking-widest text-[#8A7B6C]">
@@ -57,7 +57,7 @@ export default function ArticleReader({ article, onClose }: Props) {
         </div>
 
         {/* 正文 */}
-        <div className="thin-scroll flex-1 overflow-y-auto">
+        <div className="thin-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain">
           <article className="mx-auto max-w-[65ch] px-6 py-10 md:py-14">
             <h1 className="font-serif-sc text-2xl font-bold leading-snug text-[#3E3128] md:text-3xl">
               {article.title}

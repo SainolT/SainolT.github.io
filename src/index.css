@@ -253,3 +253,58 @@
     opacity: 0;
   }
 }
+
+/* ---------- 积木拼贴纸 ---------- */
+.block-sticker {
+  position: relative;
+  transform: rotate(var(--rot, 0deg));
+  box-shadow: 0 5px 10px -4px rgba(62, 49, 40, 0.4);
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease;
+}
+.block-sticker:hover {
+  z-index: 10;
+  transform: rotate(var(--rot, 0deg)) scale(1.16) translateY(-6px);
+  box-shadow: 0 18px 26px -10px rgba(62, 49, 40, 0.5);
+}
+.triangle-clip {
+  clip-path: polygon(50% 5%, 95% 93%, 5% 93%);
+}
+.triangle-clip-inner {
+  clip-path: polygon(50% 20%, 82% 84%, 18% 84%);
+}
+
+/* ---------- 积木散开后的漂浮 ---------- */
+@keyframes block-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.animate-bob {
+  animation: block-bob 2.2s ease-in-out infinite;
+}
+
+/* ---------- 全局页面滚动条：与纸质暖调统一 ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #ede3d2;
+}
+::-webkit-scrollbar-thumb {
+  background: #cdbca4;
+  border-radius: 8px;
+  border: 2px solid #ede3d2;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c17e5b;
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #cdbca4 #ede3d2;
+}

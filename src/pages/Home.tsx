@@ -1,15 +1,30 @@
+import { useState } from 'react'
 import Hero from '../sections/Hero'
 import GameLibrary from '../sections/GameLibrary'
 import Archive from '../sections/Archive'
 import ClickSpark from '../components/ClickSpark'
+import GameDetail from '../components/GameDetail'
+import { games, type Game } from '../data/games'
 
 export default function Home() {
+  const [detail, setDetail] = useState<{ game: Game; autoPlay: boolean } | null>(null)
+
+  const openFirstPlayable = () => {
+    const first = games.find((g) => g.playUrl)
+    if (first) setDetail({ game: first, autoPlay: true })
+  }
+
   return (
     <main className="grain min-h-screen">
       <ClickSpark />
-      <Hero />
-      <GameLibrary />
+      <Hero onPlayStart={openFirstPlayable} />
+      <GameLibrary onOpenGame={(game) => setDetail({ game, autoPlay: false })} />
       <Archive />
+      <GameDetail
+        game={detail?.game ?? null}
+        autoPlay={detail?.autoPlay}
+        onClose={() => setDetail(null)}
+      />
 
       {/* 页脚 */}
       <footer className="border-t border-[#D8CBB8] bg-[#EDE3D2]/60">
