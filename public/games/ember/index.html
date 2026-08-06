@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+<title>余烬拾光 · Ember Catch</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; background: #221A14; }
+  body {
+    font-family: 'Noto Sans SC', ui-sans-serif, system-ui, sans-serif;
+    color: #F3ECE1; user-select: none; -webkit-user-select: none;
+    touch-action: none;
+  }
+  #wrap { position: relative; width: 100%; height: 100%; }
+  canvas { display: block; width: 100%; height: 100%; }
+  .hud {
+    position: absolute; top: 14px; left: 18px; right: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    pointer-events: none; font-size: 14px; letter-spacing: .15em;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+  }
+  .overlay {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: rgba(34,26,20,.72); backdrop-filter: blur(4px);
+    text-align: center; padding: 24px;
+  }
+  .overlay h1 { font-size: clamp(28px, 6vw, 44px); font-weight: 700; letter-spacing: .2em; }
+  .overlay h1 em { color: #E8B48A; font-style: normal; }
+  .overlay p { color: #CBBBA3; font-size: 14px; line-height: 1.9; }
+  .overlay .score { font-size: 20px; color: #E8B48A; letter-spacing: .2em; }
+  .btn {
+    margin-top: 8px; padding: 12px 40px; border-radius: 999px;
+    border: 1px solid #C17E5B; background: #C17E5B; color: #F6EFE4;
+    font-size: 15px; letter-spacing: .3em; cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn:hover { background: #A6623F; transform: translateY(-2px); }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+  <div class="hud">
+    <span id="hudScore">余烬 0</span>
+    <span id="hudLives">灯火 ♥♥♥</span>
+  </div>
+
+  <div id="startScreen" class="overlay">
+    <h1>余烬<em>拾光</em></h1>
+    <p>提着灯，接住坠落的余烬。<br/>灰烬会让灯火黯淡——三次之后，夜就黑了。</p>
+    <p>← → / A D 移动 · 触屏拖动</p>
+    <button class="btn" id="startBtn">点灯</button>
+  </div>
+
+  <div id="overScreen" class="overlay hidden">
+    <h1>夜<em>深</em>了</h1>
+    <p class="score" id="finalScore">本次拾得余烬 0</p>
+    <p id="bestScore">历史最佳 0</p>
+    <button class="btn" id="retryBtn">再点一次</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const hudScore = document.getElementById('hudScore');
+  const hudLives = document.getElementById('hudLives');
+  const startScreen = document.getElementById('startScreen');
+  const overScreen = document.getElementById('overScreen');
+  const finalScore = document.getElementById('finalScore');
+  const bestScoreEl = document.getElementById('bestScore');
+
+  let W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const keys = {};
+  window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+  window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+  let pointerX = null;
+  cv.addEventListener('pointermove', e => {
+    const r = cv.getBoundingClientRect();
+    pointerX = e.clientX - r.left;
+  });
+  cv.addEventListener('pointerdown', e => {
+    const r = cv.getBoundingClientRect();
+    pointerX = e.clientX - r.left;
+  });
+
+  const lantern = { x: 0, w: 90, h: 16, speed: 7.5 };
+  let embers = [];      // 余烬（加分）
+  let ashes = [];       // 灰烬（扣命）
+  let sparks = [];      // 粒子
+  let score = 0, lives = 3, best = 0;
+  let running = false, lastTime = 0, spawnTimer = 0, elapsed = 0;
+
+  try { best = parseInt(localStorage.getItem('ember-best') || '0', 10) || 0; } catch (e) {}
+
+  function difficulty() { return Math.min(1 + elapsed / 25, 3.2); }
+
+  function spawn() {
+    const isAsh = Math.random() < Math.min(0.18 + elapsed / 120, 0.4);
+    const item = {
+      x: 30 + Math.random() * (W - 60),
+      y: -20,
+      r: isAsh ? 7 : 6,
+      vy: (2.2 + Math.random() * 1.6) * difficulty(),
+      vx: (Math.random() - 0.5) * 1.2,
+      wobble: Math.random() * Math.PI * 2,
+    };
+    (isAsh ? ashes : embers).push(item);
+  }
+
+  function burst(x, y, color, n) {
+    for (let i = 0; i < n; i++) {
+      sparks.push({
+        x, y,
+        vx: (Math.random() - 0.5) * 5,
+        vy: -Math.random() * 4 - 1,
+        life: 1,
+        color,
+      });
+    }
+  }
+
+  function reset() {
+    score = 0; lives = 3; elapsed = 0; spawnTimer = 0;
+    embers = []; ashes = []; sparks = [];
+    lantern.x = W / 2;
+    hudScore.textContent = '余烬 0';
+    hudLives.textContent = '灯火 ♥♥♥';
+  }
+
+  function update(dt) {
+    elapsed += dt;
+    // 移动
+    if (keys['arrowleft'] || keys['a']) lantern.x -= lantern.speed;
+    if (keys['arrowright'] || keys['d']) lantern.x += lantern.speed;
+    if (pointerX !== null) lantern.x += (pointerX - lantern.x) * 0.25;
+    lantern.x = Math.max(lantern.w / 2, Math.min(W - lantern.w / 2, lantern.x));
+
+    // 生成
+    spawnTimer -= dt;
+    if (spawnTimer <= 0) {
+      spawn();
+      spawnTimer = Math.max(0.28, 0.85 - elapsed * 0.012);
+    }
+
+    const catchY = H - 60;
+    const step = (arr, onCatch) => {
+      for (let i = arr.length - 1; i >= 0; i--) {
+        const it = arr[i];
+        it.wobble += dt * 3;
+        it.x += it.vx + Math.sin(it.wobble) * 0.6;
+        it.y += it.vy;
+        if (it.y > catchY - 10 && it.y < catchY + 14 &&
+            Math.abs(it.x - lantern.x) < lantern.w / 2 + it.r) {
+          onCatch(it);
+          arr.splice(i, 1);
+        } else if (it.y > H + 30) {
+          arr.splice(i, 1);
+        }
+      }
+    };
+
+    step(embers, it => {
+      score++;
+      hudScore.textContent = '余烬 ' + score;
+      burst(it.x, catchY, '#E8B48A', 12);
+    });
+    step(ashes, it => {
+      lives--;
+      hudLives.textContent = '灯火 ' + '♥'.repeat(Math.max(lives, 0)) + '♡'.repeat(Math.max(3 - lives, 0));
+      burst(it.x, catchY, '#7A6A58', 14);
+      if (lives <= 0) gameOver();
+    });
+
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.x += s.vx; s.y += s.vy; s.vy += 0.12; s.life -= dt * 1.6;
+      if (s.life <= 0) sparks.splice(i, 1);
+    }
+  }
+
+  function draw() {
+    // 夜空
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#1C1510');
+    g.addColorStop(1, '#33241A');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // 远处星火
+    ctx.fillStyle = 'rgba(232,180,138,0.15)';
+    for (let i = 0; i < 24; i++) {
+      const sx = (i * 97.3) % W;
+      const sy = (i * 57.7) % (H * 0.6);
+      ctx.fillRect(sx, sy, 2, 2);
+    }
+
+    // 地面
+    ctx.fillStyle = '#2C2018';
+    ctx.fillRect(0, H - 30, W, 30);
+
+    // 提灯
+    const lx = lantern.x, ly = H - 60;
+    const glow = ctx.createRadialGradient(lx, ly, 4, lx, ly, 90);
+    glow.addColorStop(0, 'rgba(232,180,138,0.35)');
+    glow.addColorStop(1, 'rgba(232,180,138,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(lx, ly, 90, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#C17E5B';
+    ctx.beginPath();
+    ctx.roundRect(lx - lantern.w / 2, ly - lantern.h / 2, lantern.w, lantern.h, 8);
+    ctx.fill();
+    ctx.fillStyle = '#F6E3BC';
+    ctx.beginPath();
+    ctx.roundRect(lx - lantern.w / 2 + 8, ly - 4, lantern.w - 16, 8, 4);
+    ctx.fill();
+    // 灯柄
+    ctx.strokeStyle = '#8F5638';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(lx, ly - lantern.h / 2 - 8, 14, Math.PI, 0);
+    ctx.stroke();
+
+    // 余烬
+    for (const it of embers) {
+      const eg = ctx.createRadialGradient(it.x, it.y, 1, it.x, it.y, it.r * 3);
+      eg.addColorStop(0, 'rgba(246,227,188,0.9)');
+      eg.addColorStop(0.4, 'rgba(232,180,138,0.7)');
+      eg.addColorStop(1, 'rgba(232,180,138,0)');
+      ctx.fillStyle = eg;
+      ctx.beginPath(); ctx.arc(it.x, it.y, it.r * 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#F6E3BC';
+      ctx.beginPath(); ctx.arc(it.x, it.y, it.r, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // 灰烬
+    ctx.fillStyle = '#6E6154';
+    for (const it of ashes) {
+      ctx.beginPath(); ctx.arc(it.x, it.y, it.r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#54493E';
+      ctx.beginPath(); ctx.arc(it.x - 2, it.y - 2, it.r * 0.4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#6E6154';
+    }
+
+    // 粒子
+    for (const s of sparks) {
+      ctx.globalAlpha = Math.max(s.life, 0);
+      ctx.fillStyle = s.color;
+      ctx.fillRect(s.x, s.y, 3, 3);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function loop(t) {
+    if (!running) return;
+    const dt = Math.min((t - lastTime) / 1000, 0.05);
+    lastTime = t;
+    update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function start() {
+    reset();
+    startScreen.classList.add('hidden');
+    overScreen.classList.add('hidden');
+    running = true;
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  function gameOver() {
+    running = false;
+    best = Math.max(best, score);
+    try { localStorage.setItem('ember-best', String(best)); } catch (e) {}
+    finalScore.textContent = '本次拾得余烬 ' + score;
+    bestScoreEl.textContent = '历史最佳 ' + best;
+    overScreen.classList.remove('hidden');
+  }
+
+  document.getElementById('startBtn').addEventListener('click', start);
+  document.getElementById('retryBtn').addEventListener('click', start);
+
+  // 首屏静态背景
+  lantern.x = W / 2;
+  draw();
+})();
+</script>
+</body>
+</html>
