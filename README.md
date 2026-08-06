@@ -1,13 +1,13 @@
-# SainolT · 游戏策划个人主页
+# SainolT · 游戏策划个人主页（由kimiK3生成，我想可能会有一些潜在的问题，请检查无问题后再考虑采用）
 
-低饱和暖色调的个人主页 + 游戏档案馆，托管于 GitHub Pages。
+个人主页 + 游戏档案馆，托管于 GitHub Pages。
 
 - 线上地址：https://sainolt.github.io
 - 技术栈：React + TypeScript + Vite + Tailwind CSS
 
 ---
 
-## 日常维护（最常做的事）
+## 日常维护
 
 ### 添加 / 修改游戏卡片
 
