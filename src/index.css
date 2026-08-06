@@ -38,6 +38,18 @@
     @apply bg-background text-foreground;
     font-family: 'Noto Sans SC', ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    /* 纸面纹理：点阵 + 横线 + 顶部暖光 + 边缘暗角 */
+    background-image:
+      radial-gradient(ellipse at center, transparent 55%, rgba(62, 49, 40, 0.055) 100%),
+      radial-gradient(ellipse at 50% -10%, rgba(217, 166, 121, 0.16), transparent 55%),
+      radial-gradient(rgba(166, 98, 63, 0.055) 1px, transparent 1.6px),
+      linear-gradient(rgba(62, 49, 40, 0.022) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      100% 100%,
+      26px 26px,
+      100% 34px;
+    background-attachment: fixed;
   }
   ::selection {
     background: #c17e5b;
@@ -184,4 +196,60 @@
 .thin-scroll::-webkit-scrollbar-thumb {
   background: #cdbca4;
   border-radius: 8px;
+}
+
+/* ---------- 点击余烬迸溅 ---------- */
+.click-burst {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+}
+.click-burst span {
+  position: absolute;
+  left: -2.5px;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c17e5b;
+  box-shadow: 0 0 6px rgba(193, 126, 91, 0.65);
+  animation: spark-fly var(--d, 0.5s) cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+}
+.click-burst span:nth-child(even) {
+  background: #d9a679;
+}
+.click-burst span:nth-child(3n) {
+  background: #a6623f;
+  width: 4px;
+  height: 4px;
+}
+.click-burst i {
+  position: absolute;
+  left: -14px;
+  top: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(166, 98, 63, 0.45);
+  animation: ring-out 0.45s ease-out forwards;
+}
+@keyframes spark-fly {
+  from {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.15);
+    opacity: 0;
+  }
+}
+@keyframes ring-out {
+  from {
+    transform: scale(0.25);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.7);
+    opacity: 0;
+  }
 }

@@ -104,7 +104,7 @@ export default function GameLibrary() {
           </h2>
         </div>
         <p className="max-w-xs text-sm leading-relaxed text-[#8A7B6C]">
-          每一卷档案都可以翻开：设计思路、职责分工，以及——能上手的 H5 实机试玩。
+          点击卡片查看设计档案，带「可试玩」徽章的游戏支持 H5 实机试玩。
         </p>
       </div>
 

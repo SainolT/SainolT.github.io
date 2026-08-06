@@ -1,11 +1,15 @@
 import Hero from '../sections/Hero'
 import GameLibrary from '../sections/GameLibrary'
+import Archive from '../sections/Archive'
+import ClickSpark from '../components/ClickSpark'
 
 export default function Home() {
   return (
-    <main className="grain min-h-screen bg-[#F3ECE1]">
+    <main className="grain min-h-screen">
+      <ClickSpark />
       <Hero />
       <GameLibrary />
+      <Archive />
 
       {/* 页脚 */}
       <footer className="border-t border-[#D8CBB8] bg-[#EDE3D2]/60">
@@ -15,7 +19,7 @@ export default function Home() {
               Sainol<span className="italic text-[#C17E5B]">T</span>
             </p>
             <p className="mt-1 text-xs tracking-[0.3em] text-[#8A7B6C]">
-              以策划之名 · DESIGNED TO PLAY
+              游戏策划 · GAME DESIGNER
             </p>
           </div>
           <a

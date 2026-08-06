@@ -61,7 +61,11 @@ export default function Hero() {
         <span className="font-display text-sm font-semibold tracking-[0.3em] text-[#3E3128]">
           SAINOLT<sup className="text-[#A6623F]">®</sup>
         </span>
-        <span className="hidden text-[11px] tracking-[0.35em] text-[#8A7B6C] md:block">
+        <nav className="hidden items-center gap-6 text-[11px] tracking-[0.3em] text-[#8A7B6C] md:flex">
+          <a href="#library" className="transition-colors hover:text-[#A6623F]">游戏库</a>
+          <a href="#archive" className="transition-colors hover:text-[#A6623F]">档案馆</a>
+        </nav>
+        <span className="hidden text-[11px] tracking-[0.35em] text-[#8A7B6C] lg:block">
           GAME DESIGN ARCHIVE — 2026
         </span>
         <a
@@ -100,8 +104,7 @@ export default function Hero() {
           </h1>
           <p className="mt-6 max-w-md text-base leading-relaxed text-[#6B5D4F] md:text-lg">
             一名<span className="font-serif-sc font-bold text-[#3E3128]">游戏策划</span>。
-            把规则写成体验，把体验藏进细节——
-            这里收藏着我设计的每一个世界。
+            这里收录我设计的游戏，和写下的拆解。
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-4">
             <a
@@ -111,8 +114,14 @@ export default function Hero() {
               进入游戏库
               <span className="ml-2 inline-block transition-transform group-hover:translate-y-0.5">↓</span>
             </a>
+            <a
+              href="#archive"
+              className="rounded-full border border-[#3E3128]/30 px-7 py-3 text-sm tracking-[0.25em] text-[#3E3128] transition-colors hover:bg-[#3E3128] hover:text-[#F3ECE1]"
+            >
+              档案馆 →
+            </a>
             <span className="text-xs tracking-widest text-[#8A7B6C]">
-              {`{ 3 个项目收录中 }`}
+              {`{ 持续收录中 }`}
             </span>
           </div>
         </div>

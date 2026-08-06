@@ -41,6 +41,27 @@
 1. 把游戏文件放进 `public/games/你的游戏名/`，入口命名为 `index.html`。
 2. 在 `games.ts` 对应记录里填 `playUrl: 'games/你的游戏名/index.html'`。
 
+### 添加 / 修改档案馆文章
+
+文章数据集中在 **`src/data/articles.ts`**，结构如下：
+
+```ts
+{
+  id: 'my-article',
+  index: 'A-03',
+  type: '拆解',              // 可选：设计案 / 拆解（决定印章颜色）
+  title: '文章标题',
+  titleEn: 'English Title',  // 可省略
+  date: '2026-08',
+  summary: '卡片上显示的摘要……',
+  tags: ['标签1', '标签2'],
+  readMinutes: 8,
+  content: [
+    { heading: '小节标题（可省略）', paragraphs: ['第一段……', '第二段……'] },
+  ],
+}
+```
+
 ### 改其他文字
 
 | 想改什么 | 改哪里 |
