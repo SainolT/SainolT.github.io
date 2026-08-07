@@ -132,7 +132,15 @@ src/pages/Home.tsx           页脚
 - **新增板块**：在 `src/sections/` 新建组件 → 在 `Home.tsx` 里引入摆放 → 在 `SiteNav.tsx` 加锚点链接。注意导航是固定定位，板块要有 `scroll-mt-*` 补偿（参考现有两个板块的写法），否则跳转后标题会被导航遮住。
 - **通用风格零件**（都在 `index.css`，可直接复用）：`.grain` 纸张颗粒覆层、`.ticket-notch` 票根斜切角、`.reveal` 滚动显现、缝线效果用 `repeating-linear-gradient` 虚线、点击粒子特效在 `src/components/ClickSpark.tsx`。
 
-### 4. 图标与分享图
+### 4. 点击特效
+
+全站点击时的「余烬迸溅 + 墨圈扩散」效果：
+
+- **逻辑在 `src/components/ClickSpark.tsx`**（挂在 `Home.tsx` 里，全局监听 `pointerdown`）。可调的参数都在 `handler` 里：粒子数量（`6 + Math.floor(Math.random() * 3)`）、飞散距离（`20 + Math.random() * 34`）、时长（`--d`）。
+- **样式在 `index.css` 的 `.click-burst` 一组规则里**：粒子颜色（默认陶土 `#C17E5B`，偶数粒子杏色 `#D9A679`，3 的倍数深陶 `#A6623F`）、粒子大小、墨圈的描边颜色与扩散动画 `ring-out`。换肤时把这三个色值一起换掉即可。
+- **想关掉**：删掉 `Home.tsx` 里的 `<ClickSpark />` 一行。组件自带 `prefers-reduced-motion` 检测，系统开了减弱动效的用户不会看到粒子。
+
+### 5. 图标与分享图
 
 见上文「更换站点图标 / 分享图」，`scripts/make-icons.py` 一键重生成。
 
