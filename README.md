@@ -87,6 +87,57 @@ python scripts/make-icons.py
 
 ---
 
+## 更换 UI 风格（换肤指南）
+
+本站的设计语言是「低饱和暖色 × 纸质档案馆」。想换成自己的风格，按下面四层改即可，建议全程开着 `npm run dev` 实时预览。
+
+### 1. 配色
+
+核心色板（全站统一使用这套低饱和暖色）：
+
+| 用途 | 色值 |
+|---|---|
+| 奶油纸底 | `#F3ECE1` / `#F6F0E4` |
+| 陶土主色（按钮、强调） | `#C17E5B` |
+| 杏色点缀（hover、高光） | `#D9A679` |
+| 灰绿辅色 | `#A8A487` |
+| 深咖（正文、导航栏） | `#3E3128`（导航栏为调浅的 `#4C3D32`） |
+| 深陶（徽章厚度、描边） | `#A6623F` |
+
+颜色分布在两处：
+
+- **`src/index.css` 顶部的 CSS 变量**（HSL 格式）——控制页面底色、正文色等基础层；
+- **各组件里的 Tailwind 任意值**，如 `bg-[#3E3128]`、`text-[#C17E5B]`——占大部分。
+
+全局换色最有效的方式：在编辑器里**对整个 `src/` 目录做大小写不敏感的全局替换**（把 `#C17E5B` 换成你的主色，以此类推），再逐个页面预览微调。纸面纹理（点阵、横线、暗角、顶部暖光）在 `index.css` 的 `body { background-image: ... }` 里，可以按喜好删改。
+
+### 2. 字体
+
+- 字体通过 Google Fonts 在 `index.html` 里引入：**Fraunces**（英文展示标题）、**Noto Serif SC**（中文衬线）、**Noto Sans SC**（正文）。
+- 对应的工具类在 `index.css`：`.font-display`（英文大标题）、`.font-serif-sc`（中文衬线强调）；正文默认 Noto Sans SC。
+- 换字体 = 改 `index.html` 的字体链接 + 改这两个工具类的 `font-family`。
+
+### 3. 布局与板块
+
+整站是单页结构，`src/pages/Home.tsx` 负责拼装，每个板块一个独立文件：
+
+```
+src/components/SiteNav.tsx   吸顶导航（含分享按钮）
+src/sections/Hero.tsx        首屏（含积木玩具 BlocksToy、开始游戏按钮）
+src/sections/GameLibrary.tsx 游戏库（票根卡片 + 详情弹层 + H5 试玩）
+src/sections/Archive.tsx     档案馆（文章列表 + 阅读器）
+src/pages/Home.tsx           页脚
+```
+
+- **新增板块**：在 `src/sections/` 新建组件 → 在 `Home.tsx` 里引入摆放 → 在 `SiteNav.tsx` 加锚点链接。注意导航是固定定位，板块要有 `scroll-mt-*` 补偿（参考现有两个板块的写法），否则跳转后标题会被导航遮住。
+- **通用风格零件**（都在 `index.css`，可直接复用）：`.grain` 纸张颗粒覆层、`.ticket-notch` 票根斜切角、`.reveal` 滚动显现、缝线效果用 `repeating-linear-gradient` 虚线、点击粒子特效在 `src/components/ClickSpark.tsx`。
+
+### 4. 图标与分享图
+
+见上文「更换站点图标 / 分享图」，`scripts/make-icons.py` 一键重生成。
+
+---
+
 ## 本地开发
 
 ```bash
