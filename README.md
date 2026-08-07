@@ -67,9 +67,23 @@
 | 想改什么 | 改哪里 |
 |---|---|
 | Hero 自我介绍、跑马灯词条 | `src/sections/Hero.tsx` |
+| 导航栏（链接、分享按钮、配色） | `src/components/SiteNav.tsx` |
+| 积木小动物的样式与种类 | `src/data/animals.ts` |
 | 游戏库板块文案 | `src/sections/GameLibrary.tsx` |
 | 页脚 / GitHub 链接 | `src/pages/Home.tsx` |
 | 全站配色、动效 | `src/index.css` |
+
+### 更换站点图标 / 分享图
+
+标签页图标（favicon）和社交分享大图（og-image）由脚本生成：
+
+```bash
+python scripts/make-icons.py
+```
+
+- 生成的文件直接写入 `public/`（favicon.ico、icon-192/512、apple-touch-icon、og-image 等），push 后即生效。
+- 想调整徽章的配色、月亮星星位置或分享图文案，改 `scripts/make-icons.py` 里的常量即可；脚本同目录会输出一张 `preview-sheet.png` 供预览。
+- 分享图的显示文案同时在 `index.html` 的 `og:*` / `twitter:*` meta 标签里，改文案时两边要同步。
 
 ---
 
