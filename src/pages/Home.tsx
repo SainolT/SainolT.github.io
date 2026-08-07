@@ -4,6 +4,7 @@ import GameLibrary from '../sections/GameLibrary'
 import Archive from '../sections/Archive'
 import ClickSpark from '../components/ClickSpark'
 import GameDetail from '../components/GameDetail'
+import SiteNav from '../components/SiteNav'
 import { games, type Game } from '../data/games'
 
 export default function Home() {
@@ -15,8 +16,9 @@ export default function Home() {
   }
 
   return (
-    <main className="grain min-h-screen">
+    <main id="top" className="grain min-h-screen">
       <ClickSpark />
+      <SiteNav />
       <Hero onPlayStart={openFirstPlayable} />
       <GameLibrary onOpenGame={(game) => setDetail({ game, autoPlay: false })} />
       <Archive />

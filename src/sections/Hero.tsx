@@ -15,28 +15,6 @@ const marqueeItems = [
 export default function Hero({ onPlayStart }: { onPlayStart: () => void }) {
   return (
     <header className="relative flex min-h-screen flex-col overflow-hidden">
-      {/* 顶栏 */}
-      <div className="flex items-center justify-between px-6 pt-6 md:px-12 md:pt-8">
-        <span className="font-display text-sm font-semibold tracking-[0.3em] text-[#3E3128]">
-          SAINOLT<sup className="text-[#A6623F]">®</sup>
-        </span>
-        <nav className="hidden items-center gap-6 text-[11px] tracking-[0.3em] text-[#8A7B6C] md:flex">
-          <a href="#library" className="transition-colors hover:text-[#A6623F]">游戏库</a>
-          <a href="#archive" className="transition-colors hover:text-[#A6623F]">档案馆</a>
-        </nav>
-        <span className="hidden text-[11px] tracking-[0.35em] text-[#8A7B6C] lg:block">
-          GAME DESIGN ARCHIVE — 2026
-        </span>
-        <a
-          href="https://github.com/SainolT"
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-full border border-[#3E3128]/30 px-4 py-1.5 text-xs tracking-widest text-[#3E3128] transition-colors hover:bg-[#3E3128] hover:text-[#F3ECE1]"
-        >
-          GITHUB ↗
-        </a>
-      </div>
-
       {/* 主体：左文右积木板的非对称构图 */}
       <div className="relative mx-auto flex w-full max-w-7xl flex-1 items-center px-6 md:px-12">
         {/* 左侧竖排 */}

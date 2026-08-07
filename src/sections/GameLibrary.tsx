@@ -85,7 +85,7 @@ export default function GameLibrary({ onOpenGame }: { onOpenGame: (game: Game) =
   const tilts = [-1.2, 0.8, -0.6]
 
   return (
-    <section id="library" className="relative mx-auto max-w-6xl px-6 py-24 md:px-10 md:py-36">
+    <section id="library" className="relative mx-auto max-w-6xl scroll-mt-8 px-6 py-24 md:px-10 md:py-36 md:-scroll-mt-4">
       {/* 板块标题 */}
       <div ref={headRef} className="reveal mb-16 flex flex-wrap items-end justify-between gap-6 md:mb-20">
         <div>

@@ -82,7 +82,7 @@ export default function Archive() {
   const list = filter === '全部' ? articles : articles.filter((a) => a.type === filter)
 
   return (
-    <section id="archive" className="relative mx-auto max-w-4xl px-6 pb-24 md:px-10 md:pb-36">
+    <section id="archive" className="relative mx-auto max-w-6xl scroll-mt-32 px-6 pb-24 md:px-10 md:pb-36">
       {/* 板块标题 */}
       <div ref={headRef} className="reveal mb-10 md:mb-14">
         <p className="mb-3 flex items-center gap-3 text-xs tracking-[0.4em] text-[#A6623F]">
