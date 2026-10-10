@@ -41,6 +41,32 @@
 1. 把游戏文件放进 `public/games/你的游戏名/`，入口命名为 `index.html`。
 2. 在 `games.ts` 对应记录里填 `playUrl: 'games/你的游戏名/index.html'`。
 
+### 添加 / 修改工具箱条目
+
+工具数据集中在 **`src/data/tools.ts`**。复制一条记录改成新的即可：
+
+```ts
+{
+  id: 'my-tool',
+  index: 'T-02',
+  name: '工具名',
+  nameEn: 'My Tool',
+  version: 'v1.0.0',
+  date: '2026-10',
+  platform: 'Windows',        // 卡片上的平台印章
+  size: '约 10 MB',
+  tagline: '一句话介绍',
+  description: '详细介绍……',
+  features: ['功能1', '功能2'],
+  tags: ['标签1', '标签2'],
+  downloadUrl: 'downloads/my-tool-v1.0.0.zip',  // 见下
+  repoUrl: 'https://github.com/SainolT/my-tool',
+}
+```
+
+- `downloadUrl` 建议直接填 GitHub Releases 的链接（`https://github.com/用户名/仓库/releases/latest`），这样工具更新只需发新版 Release，网站不用跟着改；如确需站内托管，把文件放进 `public/downloads/` 并填相对路径（文件名用英文 + 版本号）。
+- 点击卡片弹出的详情层（介绍、功能、版本信息、下载按钮、GitHub 链接）全部自动生成。
+
 ### 添加 / 修改档案馆文章
 
 文章数据集中在 **`src/data/articles.ts`**，结构如下：
@@ -70,6 +96,7 @@
 | 导航栏（链接、分享按钮、配色） | `src/components/SiteNav.tsx` |
 | 积木小动物的样式与种类 | `src/data/animals.ts` |
 | 游戏库板块文案 | `src/sections/GameLibrary.tsx` |
+| 工具箱板块文案 | `src/sections/Toolkit.tsx` |
 | 页脚 / GitHub 链接 | `src/pages/Home.tsx` |
 | 全站配色、动效 | `src/index.css` |
 
@@ -125,6 +152,7 @@ python scripts/make-icons.py
 src/components/SiteNav.tsx   吸顶导航（含分享按钮）
 src/sections/Hero.tsx        首屏（含积木玩具 BlocksToy、开始游戏按钮）
 src/sections/GameLibrary.tsx 游戏库（票根卡片 + 详情弹层 + H5 试玩）
+src/sections/Toolkit.tsx     工具箱（吊牌卡片 + 详情弹层 + 下载）
 src/sections/Archive.tsx     档案馆（文章列表 + 阅读器）
 src/pages/Home.tsx           页脚
 ```

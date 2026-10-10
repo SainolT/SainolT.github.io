@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Hero from '../sections/Hero'
 import GameLibrary from '../sections/GameLibrary'
+import Toolkit from '../sections/Toolkit'
 import Archive from '../sections/Archive'
 import ClickSpark from '../components/ClickSpark'
 import GameDetail from '../components/GameDetail'
@@ -21,6 +22,7 @@ export default function Home() {
       <SiteNav />
       <Hero onPlayStart={openFirstPlayable} />
       <GameLibrary onOpenGame={(game) => setDetail({ game, autoPlay: false })} />
+      <Toolkit />
       <Archive />
       <GameDetail
         game={detail?.game ?? null}

@@ -73,6 +73,9 @@ export default function SiteNav() {
                 <a href="#library" className="transition-colors hover:text-[#D9A679]">
                   游戏库
                 </a>
+                <a href="#toolkit" className="transition-colors hover:text-[#D9A679]">
+                  工具箱
+                </a>
                 <a href="#archive" className="transition-colors hover:text-[#D9A679]">
                   档案馆
                 </a>
