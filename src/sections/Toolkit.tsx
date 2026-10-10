@@ -3,69 +3,62 @@ import { tools, type Tool } from '../data/tools'
 import { useReveal } from '../hooks/useReveal'
 import ToolDetail from '../components/ToolDetail'
 
-/** 吊牌卡：穿孔 + 挂绳 + 撕裂线 */
-function TagCard({ tool, onOpen }: { tool: Tool; onOpen: () => void }) {
+/** 工具卡：图标徽章 + 虚线内框，与首页按钮同一语言 */
+function ToolCard({ tool, onOpen }: { tool: Tool; onOpen: () => void }) {
   const ref = useReveal<HTMLButtonElement>()
 
   return (
     <button ref={ref} onClick={onOpen} className="reveal group relative w-full text-left">
-      <div className="relative -rotate-1 rounded-2xl border border-[#D8CBB8] bg-[#F6F0E4] px-6 pb-5 pt-6 shadow-[0_10px_26px_-18px_rgba(62,49,40,0.4)] transition-all duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-[0_20px_36px_-18px_rgba(143,86,56,0.45)] md:px-8">
-        {/* 挂绳孔 */}
-        <span className="absolute left-7 top-5 h-4 w-4 rounded-full border border-[#D8CBB8] bg-[#EDE3D2] shadow-[inset_0_1.5px_3px_rgba(62,49,40,0.35)]" />
-        {/* 挂绳 */}
-        <span
-          aria-hidden
-          className="absolute left-[38px] top-0 h-6 w-px"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(180deg, #A8A487 0 4px, transparent 4px 7px)',
-          }}
-        />
+      <div className="relative rounded-2xl border border-[#D8CBB8] bg-[#F6F0E4] p-2.5 shadow-[0_10px_26px_-18px_rgba(62,49,40,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_36px_-18px_rgba(143,86,56,0.45)]">
+        {/* 虚线内框 */}
+        <div className="pointer-events-none absolute inset-2.5 rounded-xl border border-dashed border-[#C17E5B]/35" />
 
-        <div className="flex items-start gap-5 pl-8 md:gap-7 md:pl-10">
-          {/* 凹印编号 */}
-          <span className="font-display mt-1 text-2xl font-black tracking-tight text-[#D8CBB8] [text-shadow:0_1px_0_#fff8ec] md:text-3xl">
-            {tool.index}
+        <div className="relative flex items-center gap-5 px-4 py-4 md:gap-7 md:px-6">
+          {/* 图标徽章 */}
+          <span className="flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-[#C17E5B] shadow-[inset_0_-4px_0_rgba(62,49,40,0.22)] transition-transform duration-300 group-hover:scale-105 md:h-16 md:w-16">
+            <svg viewBox="0 0 24 24" className="h-7 w-7 md:h-8 md:w-8" fill="#F6EFE4" aria-hidden>
+              <path d="M4 4h16a1 1 0 0 1 1 1v3H3V5a1 1 0 0 1 1-1ZM3 10h7v4H3V10Zm0 6h7v4H4a1 1 0 0 1-1-1v-3Zm9-6h9v9a1 1 0 0 1-1 1h-8V10Z" />
+            </svg>
           </span>
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-block -rotate-2 rounded border-[1.5px] border-[#A8A487] bg-[#A8A487]/10 px-2 py-0.5 text-[11px] font-bold tracking-widest text-[#77745A]">
-                {tool.platform}
-              </span>
-              <span className="text-xs tracking-widest text-[#B4A791]">
-                {tool.version} · {tool.date}
-              </span>
-            </div>
-            <h3 className="font-serif-sc mt-2.5 text-lg font-bold leading-snug text-[#3E3128] transition-colors group-hover:text-[#A6623F] md:text-xl">
-              {tool.name}
-              <span className="font-display ml-2.5 text-sm italic font-medium text-[#8A7B6C]">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <h3 className="font-serif-sc text-lg font-bold leading-snug text-[#3E3128] transition-colors group-hover:text-[#A6623F] md:text-xl">
+                {tool.name}
+              </h3>
+              <span className="font-display text-sm italic font-medium text-[#8A7B6C]">
                 {tool.nameEn}
               </span>
-            </h3>
-            <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#6B5D4F]">
-              {tool.tagline}
-            </p>
-
-            {/* 撕裂线 */}
-            <div className="mt-4 flex items-center justify-between border-t border-dashed border-[#D8CBB8] pt-3">
-              <div className="flex flex-wrap items-center gap-2">
-                {tool.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-[#EDE3D2] px-2.5 py-0.5 text-[11px] text-[#6B5D4F]"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="ml-3 flex flex-none items-center gap-1.5 text-xs tracking-widest text-[#A6623F]">
-                详情 / 下载
-                <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
+              <span className="rounded-full bg-[#EDE3D2] px-2.5 py-0.5 text-[11px] tracking-widest text-[#8A7B6C]">
+                {tool.version} · {tool.platform}
               </span>
             </div>
+            <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#6B5D4F]">
+              {tool.tagline}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {tool.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-[#EDE3D2] px-2.5 py-0.5 text-[11px] text-[#6B5D4F]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 右侧：编号 + 箭头 */}
+          <div className="flex flex-none flex-col items-end gap-2 self-stretch py-1">
+            <span className="font-display text-xl font-black tracking-tight text-[#D8CBB8] [text-shadow:0_1px_0_#fff8ec] md:text-2xl">
+              {tool.index}
+            </span>
+            <span className="mt-auto flex items-center gap-1.5 text-xs tracking-widest text-[#A6623F]">
+              详情 / 下载
+              <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">
+                →
+              </span>
+            </span>
           </div>
         </div>
       </div>
@@ -99,10 +92,10 @@ export default function Toolkit() {
         </p>
       </div>
 
-      {/* 吊牌目录 */}
+      {/* 工具卡目录 */}
       <div className="space-y-5">
         {tools.map((t) => (
-          <TagCard key={t.id} tool={t} onOpen={() => setActive(t)} />
+          <ToolCard key={t.id} tool={t} onOpen={() => setActive(t)} />
         ))}
       </div>
 

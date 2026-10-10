@@ -76,6 +76,25 @@ export default function Hero({ onPlayStart }: { onPlayStart: () => void }) {
                 </span>
               </a>
               <a
+                href="#toolkit"
+                className="group relative flex items-center gap-3 rounded-2xl bg-[#3E3128] px-6 py-4 shadow-[0_5px_0_#D8CBB8,0_16px_30px_-14px_rgba(44,35,27,0.6)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_7px_0_#D8CBB8,0_22px_36px_-14px_rgba(44,35,27,0.65)] active:translate-y-0.5 active:shadow-[0_2px_0_#D8CBB8]"
+              >
+                <span className="pointer-events-none absolute inset-1.5 rounded-xl border border-dashed border-[#F3ECE1]/25" />
+                <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-[#C17E5B] shadow-[inset_0_-3px_0_rgba(62,49,40,0.25)] transition-transform duration-300 group-hover:scale-110">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="#F6EFE4" aria-hidden>
+                    <path d="M21.7 18.3l-6.4-6.4a6 6 0 0 0-7.6-7.6l3.4 3.4-2.1 2.1-3.4-3.4a6 6 0 0 0 7.6 7.6l6.4 6.4a1.5 1.5 0 0 0 2.1-2.1Z" />
+                  </svg>
+                </span>
+                <span className="relative text-left">
+                  <span className="font-serif-sc block text-base font-bold tracking-[0.2em] text-[#F3ECE1]">
+                    工具箱
+                  </span>
+                  <span className="font-display block text-[10px] italic tracking-[0.3em] text-[#F3ECE1]/55">
+                    TOOLKIT
+                  </span>
+                </span>
+              </a>
+              <a
                 href="#archive"
                 className="group relative flex items-center gap-3 rounded-2xl bg-[#3E3128] px-6 py-4 shadow-[0_5px_0_#D8CBB8,0_16px_30px_-14px_rgba(44,35,27,0.6)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_7px_0_#D8CBB8,0_22px_36px_-14px_rgba(44,35,27,0.65)] active:translate-y-0.5 active:shadow-[0_2px_0_#D8CBB8]"
               >
