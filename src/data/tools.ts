@@ -4,7 +4,6 @@ export interface Tool {
   index: string
   name: string
   nameEn: string
-  version: string
   date: string
   platform: string
   size: string
@@ -22,7 +21,6 @@ export const tools: Tool[] = [
     index: 'T-01',
     name: '字段同步工具',
     nameEn: 'Field Sync Tool',
-    version: 'v1.0.0',
     date: '2026-10',
     platform: 'Windows',
     size: '约 10.5 MB',

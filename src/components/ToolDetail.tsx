@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { Tool } from '../data/tools'
+import { useLatestRelease } from '../hooks/useLatestRelease'
 
 interface Props {
   tool: Tool | null
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function ToolDetail({ tool, onClose }: Props) {
+  const version = useLatestRelease(tool?.repoUrl)
   // Esc 关闭 + 锁定背景滚动
   useEffect(() => {
     if (!tool) return
@@ -42,9 +44,11 @@ export default function ToolDetail({ tool, onClose }: Props) {
               <span className="font-display text-outline text-3xl font-black md:text-4xl">
                 {tool.index}
               </span>
-              <span className="rounded-full bg-[#A8A487] px-3 py-0.5 text-[11px] tracking-widest text-[#3E3128]">
-                {tool.version}
-              </span>
+              {version && (
+                <span className="rounded-full bg-[#A8A487] px-3 py-0.5 text-[11px] tracking-widest text-[#3E3128]">
+                  {version}
+                </span>
+              )}
               <span className="rounded-full border border-[#D8CBB8] px-3 py-0.5 text-[11px] tracking-widest text-[#8A7B6C]">
                 {tool.platform}
               </span>
@@ -96,7 +100,7 @@ export default function ToolDetail({ tool, onClose }: Props) {
             {/* 元信息侧栏 */}
             <dl className="h-fit space-y-0 rounded-2xl border border-[#E0D4C0] bg-[#EFE6D4]/70 p-5 text-sm">
               {[
-                ['版本', tool.version],
+                ...(version ? [['版本', version]] : []),
                 ['平台', tool.platform],
                 ['大小', tool.size],
                 ['更新', tool.date],

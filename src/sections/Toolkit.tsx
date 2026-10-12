@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { tools, type Tool } from '../data/tools'
 import { useReveal } from '../hooks/useReveal'
+import { useLatestRelease } from '../hooks/useLatestRelease'
 import ToolDetail from '../components/ToolDetail'
 
 /** 工具卡：图标徽章 + 虚线内框，与首页按钮同一语言 */
 function ToolCard({ tool, onOpen }: { tool: Tool; onOpen: () => void }) {
   const ref = useReveal<HTMLButtonElement>()
+  const version = useLatestRelease(tool.repoUrl)
 
   return (
     <button ref={ref} onClick={onOpen} className="reveal group relative w-full text-left">
@@ -30,7 +32,7 @@ function ToolCard({ tool, onOpen }: { tool: Tool; onOpen: () => void }) {
                 {tool.nameEn}
               </span>
               <span className="rounded-full bg-[#EDE3D2] px-2.5 py-0.5 text-[11px] tracking-widest text-[#8A7B6C]">
-                {tool.version} · {tool.platform}
+                {version ? `${version} · ` : ''}{tool.platform}
               </span>
             </div>
             <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[#6B5D4F]">
