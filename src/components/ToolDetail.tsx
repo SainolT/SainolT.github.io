@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ToolDetail({ tool, onClose }: Props) {
-  const version = useLatestRelease(tool?.repoUrl)
+  const release = useLatestRelease(tool?.repoUrl)
   // Esc 关闭 + 锁定背景滚动
   useEffect(() => {
     if (!tool) return
@@ -44,9 +44,9 @@ export default function ToolDetail({ tool, onClose }: Props) {
               <span className="font-display text-outline text-3xl font-black md:text-4xl">
                 {tool.index}
               </span>
-              {version && (
+              {release && (
                 <span className="rounded-full bg-[#A8A487] px-3 py-0.5 text-[11px] tracking-widest text-[#3E3128]">
-                  {version}
+                  {release.tag}
                 </span>
               )}
               <span className="rounded-full border border-[#D8CBB8] px-3 py-0.5 text-[11px] tracking-widest text-[#8A7B6C]">
@@ -100,10 +100,10 @@ export default function ToolDetail({ tool, onClose }: Props) {
             {/* 元信息侧栏 */}
             <dl className="h-fit space-y-0 rounded-2xl border border-[#E0D4C0] bg-[#EFE6D4]/70 p-5 text-sm">
               {[
-                ...(version ? [['版本', version]] : []),
+                ...(release ? [['版本', release.tag]] : []),
                 ['平台', tool.platform],
-                ['大小', tool.size],
-                ['更新', tool.date],
+                ...(release?.size ? [['大小', release.size]] : []),
+                ...(release?.date ? [['更新', release.date]] : []),
               ].map(([k, v]) => (
                 <div
                   key={k}
