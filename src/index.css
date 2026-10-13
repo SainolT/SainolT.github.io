@@ -308,3 +308,117 @@ html {
   scrollbar-width: thin;
   scrollbar-color: #cdbca4 #ede3d2;
 }
+
+
+/* ========== 工具详情：README 正文排版 ========== */
+.readme-body {
+  font-size: 0.875rem;
+  line-height: 1.9;
+  color: #5C4F42;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.readme-body h1,
+.readme-body h2,
+.readme-body h3,
+.readme-body h4 {
+  font-family: inherit;
+  font-weight: 700;
+  color: #3E3128;
+  margin: 1.4em 0 0.6em;
+  line-height: 1.4;
+}
+
+.readme-body h1 { font-size: 1.25rem; }
+.readme-body h2 {
+  font-size: 1.1rem;
+  padding-bottom: 0.35em;
+  border-bottom: 1px dashed #D8CBB8;
+}
+.readme-body h3 { font-size: 1rem; color: #A6623F; }
+.readme-body h4 { font-size: 0.9rem; }
+
+.readme-body > :first-child { margin-top: 0; }
+
+.readme-body p { margin: 0.7em 0; }
+
+.readme-body ul,
+.readme-body ol {
+  margin: 0.7em 0;
+  padding-left: 1.4em;
+}
+
+.readme-body ul { list-style: disc; }
+.readme-body ol { list-style: decimal; }
+.readme-body li { margin: 0.3em 0; }
+.readme-body li::marker { color: #C17E5B; }
+
+.readme-body strong { color: #3E3128; font-weight: 600; }
+
+.readme-body code {
+  font-size: 0.82em;
+  background: #EDE3D2;
+  color: #8F5638;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+}
+
+.readme-body pre {
+  margin: 0.9em 0;
+  padding: 0.9em 1.1em;
+  background: #3E3128;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.readme-body pre code {
+  background: transparent;
+  color: #EDE3D2;
+  padding: 0;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.readme-body a {
+  color: #A6623F;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.readme-body hr {
+  border: 0;
+  border-top: 1px dashed #D8CBB8;
+  margin: 1.4em 0;
+}
+
+.readme-body blockquote {
+  margin: 0.9em 0;
+  padding-left: 1em;
+  border-left: 3px solid #D9A679;
+  color: #8A7B6C;
+}
+
+.readme-body table {
+  width: 100%;
+  margin: 0.9em 0;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.readme-body th,
+.readme-body td {
+  border: 1px solid #E0D4C0;
+  padding: 0.45em 0.8em;
+  text-align: left;
+}
+
+.readme-body th {
+  background: #EFE6D4;
+  color: #3E3128;
+  font-weight: 600;
+}
+
+.readme-body img { max-width: 100%; border-radius: 8px; }

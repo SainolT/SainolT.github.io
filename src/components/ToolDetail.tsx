@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { marked } from 'marked'
 import type { Tool } from '../data/tools'
 import { useLatestRelease } from '../hooks/useLatestRelease'
+import { useReadme } from '../hooks/useReadme'
 
 interface Props {
   tool: Tool | null
@@ -9,6 +11,14 @@ interface Props {
 
 export default function ToolDetail({ tool, onClose }: Props) {
   const release = useLatestRelease(tool?.repoUrl)
+  const readme = useReadme(tool?.repoUrl)
+
+  // README Markdown → HTML；去掉首个大标题（弹层头部已展示工具名）
+  const readmeHtml = useMemo(() => {
+    if (!readme) return null
+    const body = readme.replace(/^\s*#\s+[^\n]+\n+/, '')
+    return marked.parse(body, { async: false }) as string
+  }, [readme])
   // Esc 关闭 + 锁定背景滚动
   useEffect(() => {
     if (!tool) return
@@ -69,22 +79,31 @@ export default function ToolDetail({ tool, onClose }: Props) {
           </button>
         </div>
 
-        {/* 内容 */}
+        {/* 内容：README 区域自身限高滚动，侧栏固定可见；其余内容整体滚动 */}
         <div className="thin-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-6 md:px-9">
-          <div className="grid gap-8 md:grid-cols-[1fr_240px]">
-            <div>
+          <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_240px]">
+            <div className="min-w-0">
               <p className="font-serif-sc text-lg font-semibold text-[#A6623F]">
                 「{tool.tagline}」
               </p>
-              <p className="mt-4 leading-loose text-[#5C4F42]">{tool.description}</p>
-              <ul className="mt-6 space-y-2.5">
-                {tool.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#5C4F42]">
-                    <span className="mt-1 text-[#C17E5B]">✦</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              {readmeHtml ? (
+                <div
+                  className="readme-body thin-scroll mt-4 max-h-[48vh] overflow-y-auto overscroll-contain pr-3 md:max-h-[56vh]"
+                  dangerouslySetInnerHTML={{ __html: readmeHtml }}
+                />
+              ) : (
+                <>
+                  <p className="mt-4 leading-loose text-[#5C4F42]">{tool.description}</p>
+                  <ul className="mt-6 space-y-2.5">
+                    {tool.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-sm text-[#5C4F42]">
+                        <span className="mt-1 text-[#C17E5B]">✦</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
               <div className="mt-7 flex flex-wrap gap-2">
                 {tool.tags.map((tag) => (
                   <span
@@ -97,8 +116,8 @@ export default function ToolDetail({ tool, onClose }: Props) {
               </div>
             </div>
 
-            {/* 元信息侧栏 */}
-            <dl className="h-fit space-y-0 rounded-2xl border border-[#E0D4C0] bg-[#EFE6D4]/70 p-5 text-sm">
+            {/* 元信息侧栏：桌面端固定不随 README 滚动 */}
+            <dl className="h-fit min-w-0 space-y-0 self-start rounded-2xl border border-[#E0D4C0] bg-[#EFE6D4]/70 p-5 text-sm">
               {[
                 ...(release ? [['版本', release.tag]] : []),
                 ['平台', tool.platform],
