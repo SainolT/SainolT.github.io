@@ -113,25 +113,27 @@ export default function ToolDetail({ tool, onClose }: Props) {
                   <dd className="text-right font-medium text-[#3E3128]">{v}</dd>
                 </div>
               ))}
-              <a
-                href={tool.downloadUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 block w-full rounded-full bg-[#C17E5B] py-2.5 text-center text-sm tracking-[0.2em] text-[#F6EFE4] transition-colors hover:bg-[#A6623F]"
-              >
-                下载 exe ↓
-              </a>
-              <a
-                href={tool.repoUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-2.5 block w-full rounded-full border border-[#3E3128]/30 py-2.5 text-center text-sm tracking-[0.2em] text-[#3E3128] transition-colors hover:bg-[#3E3128] hover:text-[#F3ECE1]"
-              >
-                GITHUB ↗
-              </a>
-              <p className="mt-3 text-center text-[11px] leading-relaxed text-[#B4A791]">
-                解压即用，无需安装环境
-              </p>
+              <div className="mt-5 border-t border-dashed border-[#D8CBB8] pt-5">
+                <a
+                  href={tool.downloadUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block w-full rounded-full bg-[#C17E5B] py-3 text-center text-sm tracking-[0.2em] text-[#F6EFE4] transition-colors hover:bg-[#A6623F]"
+                >
+                  下载 exe ↓
+                </a>
+                <a
+                  href={tool.repoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 block w-full rounded-full border border-[#3E3128]/30 py-3 text-center text-sm tracking-[0.2em] text-[#3E3128] transition-colors hover:bg-[#3E3128] hover:text-[#F3ECE1]"
+                >
+                  GITHUB ↗
+                </a>
+                <p className="mt-4 text-center text-[11px] leading-relaxed text-[#B4A791]">
+                  双击即用，无需安装环境
+                </p>
+              </div>
             </dl>
           </div>
         </div>
