@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ember-catch",
+    "index": "01",
+    "title": "余烬拾光",
+    "titleEn": "Ember Catch",
+    "year": "2026",
+    "status": "可试玩",
+    "genre": "休闲反应 · H5 小品",
+    "role": "策划 / 程序 / 视觉",
+    "tags": ["反应", "节奏递进", "单指操作"],
+    "oneLiner": "一盏提灯，接住坠落的余烬。",
+    "description": "一款为网页而生的轻量反应小品：玩家提着一盏灯在夜色里接住坠落的余烬，余烬会越落越快，而灰烬会让灯火黯淡。设计目标是验证「单手 30 秒一局」的极简循环——上手零成本，分数压力随时间自然爬升。",
+    "highlights": [
+      "30 秒一局的极简核心循环",
+      "速度曲线 + 干扰物双层压力设计",
+      "支持键盘与触屏，即点即玩"
+    ],
+    "playUrl": "games/ember/index.html",
+    "tone": { "base": "#C17E5B", "deep": "#8F5638", "glow": "#E8B48A" }
+  },
+  {
+    "id": "sample-2",
+    "index": "02",
+    "title": "示例标题",
+    "titleEn": "Sample",
+    "year": "2026",
+    "status": "概念案",
+    "genre": "示例类型",
+    "role": "示例分工",
+    "tags": ["示例"],
+    "oneLiner": "示例文本：一句话介绍。",
+    "description": "示例文本：这里放游戏的详细介绍，替换成自己的项目即可。",
+    "highlights": ["示例要点一", "示例要点二", "示例要点三"],
+    "tone": { "base": "#A8A487", "deep": "#77745A", "glow": "#D6CFA8" }
+  },
+  {
+    "id": "sample-3",
+    "index": "03",
+    "title": "示例标题",
+    "titleEn": "Sample",
+    "year": "2026",
+    "status": "概念案",
+    "genre": "示例类型",
+    "role": "示例分工",
+    "tags": ["示例"],
+    "oneLiner": "示例文本：一句话介绍。",
+    "description": "示例文本：这里放游戏的详细介绍，替换成自己的项目即可。",
+    "highlights": ["示例要点一", "示例要点二", "示例要点三"],
+    "tone": { "base": "#D9A679", "deep": "#A97B4F", "glow": "#F0D3AC" }
+  }
+]

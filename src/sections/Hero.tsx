@@ -1,5 +1,6 @@
 import BlocksToy from '../components/BlocksToy'
 import PressStartButton from '../components/PressStartButton'
+import { siteCopy } from '../data/site'
 
 const marqueeItems = [
   '关卡设计',
@@ -31,7 +32,7 @@ export default function Hero({ onPlayStart }: { onPlayStart: () => void }) {
         <div className="relative z-10 flex-1 pb-24 pt-10 md:pb-32">
           <p className="mb-5 flex items-center gap-3 text-xs tracking-[0.4em] text-[#8A7B6C]">
             <span className="inline-block h-2 w-2 rounded-full bg-[#C17E5B]" />
-            PORTFOLIO — 作品档案馆
+            PORTFOLIO — 个人主页
           </p>
           <h1 className="font-display leading-[0.9] text-[#3E3128]">
             <span className="block text-[16vw] font-black tracking-tight md:text-[9.5rem]">
@@ -41,7 +42,7 @@ export default function Hero({ onPlayStart }: { onPlayStart: () => void }) {
           </h1>
           <p className="mt-6 max-w-md text-base leading-relaxed text-[#6B5D4F] md:text-lg">
             一名<span className="font-serif-sc font-bold text-[#3E3128]">游戏策划</span>。
-            这里收录我设计的游戏，和写下的拆解。
+            {siteCopy.heroIntro}
           </p>
           {/* 按钮区：点阵花纹底 + 主深次浅三个纸质按钮 */}
           <div className="relative mt-10 self-start">

@@ -1,4 +1,5 @@
 import { games, type Game } from '../data/games'
+import { siteCopy } from '../data/site'
 import { useReveal } from '../hooks/useReveal'
 
 /** 单张游戏档案卡：票根造型 + 微微倾斜 + CSS 艺术封面 */
@@ -101,7 +102,7 @@ export default function GameLibrary({ onOpenGame }: { onOpenGame: (game: Game) =
           </h2>
         </div>
         <p className="max-w-xs text-sm leading-relaxed text-[#8A7B6C]">
-          点击卡片查看设计档案，带「可试玩」徽章的游戏支持 H5 实机试玩。
+          {siteCopy.libraryIntro}
         </p>
       </div>
 

@@ -7,39 +7,53 @@
 
 ---
 
-## 日常维护
+## 内容维护（私有内容源）
 
-### 添加 / 修改游戏卡片
+本站内容分两层：
 
-所有游戏内容都集中在 **`src/data/games.ts`**，不需要改任何组件代码。
-复制一条记录改成新的即可：
+- **公开仓库（本仓库）**：`src/data/` 下的 `games.json` / `articles.json` / `site.json` 全部是**模板占位**，不含真实项目内容。
+- **私有仓库 `SainolT/site-content`**：真实内容。构建时由 `scripts/inject-content.mjs` 拉取并覆盖同名 JSON，再打包部署。
 
-```ts
+**改真实内容 = 改私有仓库里对应的 JSON 文件**，推送后到本仓库 Actions 手动跑一次「Deploy to GitHub Pages」（或推任意提交）即可更新网站。JSON 字段格式见私有仓库的 README。
+
+需要一次性配置访问凭证：本仓库 Settings → Secrets and variables → Actions → 新建名为 `CONTENT_TOKEN` 的 Secret，值为能读取私有仓库的 PAT（Fine-grained token 勾选 site-content 的 Contents: Read 权限即可）。未配置时构建自动使用模板内容，不会报错。
+
+工具箱条目（`src/data/tools.ts`）不在注入范围内——版本号、更新日期、文件大小、详情简介都会在访客浏览时实时读取对应 GitHub 仓库的 Release 和 README，工具侧无需维护任何文案。
+
+---
+
+## 模板内容维护（改本仓库）
+
+### 游戏卡片模板：`src/data/games.json`
+
+数组，每条一个游戏。字段示例：
+
+```json
 {
-  id: 'my-new-game',
-  index: '04',
-  title: '新游戏名',
-  titleEn: 'New Game',
-  year: '2026',
-  status: '可试玩',          // 可选：可试玩 / 开发中 / 概念案
-  genre: '类型 · 定位',
-  role: '你的职责',
-  tags: ['标签1', '标签2'],
-  oneLiner: '一句话介绍',
-  description: '详细介绍……',
-  highlights: ['亮点1', '亮点2', '亮点3'],
-  playUrl: 'games/my-game/index.html',  // 没有试玩就删掉这一行
-  tone: { base: '#C17E5B', deep: '#8F5638', glow: '#E8B48A' },  // 封面配色（低饱和暖色）
+  "id": "my-new-game",
+  "index": "04",
+  "title": "新游戏名",
+  "titleEn": "New Game",
+  "year": "2026",
+  "status": "可试玩",
+  "genre": "类型 · 定位",
+  "role": "你的职责",
+  "tags": ["标签1", "标签2"],
+  "oneLiner": "一句话介绍",
+  "description": "详细介绍……",
+  "highlights": ["亮点1", "亮点2", "亮点3"],
+  "playUrl": "games/my-game/index.html",
+  "tone": { "base": "#C17E5B", "deep": "#8F5638", "glow": "#E8B48A" }
 }
 ```
 
-- `status` 决定卡片上的状态徽章；只有填了 `playUrl` 的游戏才会开放「试玩」页签。
+- `status` 可选：可试玩 / 开发中 / 概念案；只有填了 `playUrl` 的游戏才会开放「试玩」页签。
 - 卡片的倾斜角度、弹层布局、封面编号全部自动生成。
 
 ### 添加 H5 试玩
 
 1. 把游戏文件放进 `public/games/你的游戏名/`，入口命名为 `index.html`。
-2. 在 `games.ts` 对应记录里填 `playUrl: 'games/你的游戏名/index.html'`。
+2. 在 `games.json` 对应记录里填 `playUrl: "games/你的游戏名/index.html"`。
 
 ### 添加 / 修改工具箱条目
 
@@ -48,56 +62,62 @@
 ```ts
 {
   id: 'my-tool',
-  index: 'T-02',
+  index: 'T-03',
   name: '工具名',
   nameEn: 'My Tool',
-  version: 'v1.0.0',
-  date: '2026-10',
-  platform: 'Windows',        // 卡片上的平台印章
-  size: '约 10 MB',
+  platform: 'Windows',
   tagline: '一句话介绍',
-  description: '详细介绍……',
-  features: ['功能1', '功能2'],
+  description: '详细介绍（README 拉取失败时的兜底）……',
+  features: ['功能1', '功能2'],  // 同为兜底
   tags: ['标签1', '标签2'],
-  downloadUrl: 'downloads/my-tool-v1.0.0.zip',  // 见下
+  downloadUrl: 'https://github.com/SainolT/my-tool/releases/latest',
   repoUrl: 'https://github.com/SainolT/my-tool',
 }
 ```
 
-- `downloadUrl` 建议直接填 GitHub Releases 的链接（`https://github.com/用户名/仓库/releases/latest`），这样工具更新只需发新版 Release，网站不用跟着改；如确需站内托管，把文件放进 `public/downloads/` 并填相对路径（文件名用英文 + 版本号）。
-- 点击卡片弹出的详情层（介绍、功能、版本信息、下载按钮、GitHub 链接）全部自动生成。
+- `downloadUrl` 直接填 GitHub Releases 的 `releases/latest` 链接，工具更新只需发新版 Release。
+- 版本徽章、更新日期、exe 大小、详情简介全部运行时读 GitHub，不在这里维护。
 
-### 添加 / 修改档案馆文章
+### 档案馆文章模板：`src/data/articles.json`
 
-文章数据集中在 **`src/data/articles.ts`**，结构如下：
+数组，每条一篇文章：
 
-```ts
+```json
 {
-  id: 'my-article',
-  index: 'A-03',
-  type: '拆解',              // 可选：设计案 / 拆解（决定印章颜色）
-  title: '文章标题',
-  titleEn: 'English Title',  // 可省略
-  date: '2026-08',
-  summary: '卡片上显示的摘要……',
-  tags: ['标签1', '标签2'],
-  readMinutes: 8,
-  content: [
-    { heading: '小节标题（可省略）', paragraphs: ['第一段……', '第二段……'] },
-  ],
+  "id": "my-article",
+  "index": "A-03",
+  "type": "拆解",
+  "title": "文章标题",
+  "titleEn": "English Title",
+  "date": "2026-08",
+  "summary": "卡片上显示的摘要……",
+  "tags": ["标签1", "标签2"],
+  "readMinutes": 8,
+  "content": [
+    { "heading": "小节标题（可省略）", "paragraphs": ["第一段……", "第二段……"] }
+  ]
 }
 ```
+
+`type` 可选：设计案 / 拆解（决定印章颜色）。
+
+### 全站介绍文案：`src/data/site.json`
+
+| 字段 | 位置 |
+|---|---|
+| `heroIntro` | 首页大标题下的一句话 |
+| `libraryIntro` | 游戏库板块标题旁的说明 |
+| `toolkitIntro` | 工具箱板块标题下的说明 |
+| `footerNote` | 页脚版权行 |
 
 ### 改其他文字
 
 | 想改什么 | 改哪里 |
 |---|---|
-| Hero 自我介绍、跑马灯词条 | `src/sections/Hero.tsx` |
+| 跑马灯词条 | `src/sections/Hero.tsx` |
 | 导航栏（链接、分享按钮、配色） | `src/components/SiteNav.tsx` |
 | 积木小动物的样式与种类 | `src/data/animals.ts` |
-| 游戏库板块文案 | `src/sections/GameLibrary.tsx` |
-| 工具箱板块文案 | `src/sections/Toolkit.tsx` |
-| 页脚 / GitHub 链接 | `src/pages/Home.tsx` |
+| 页脚 GitHub 链接 | `src/pages/Home.tsx` |
 | 全站配色、动效 | `src/index.css` |
 
 ### 更换站点图标 / 分享图
@@ -184,6 +204,6 @@ npm run build    # 生成最终静态文件到 dist/
 
 ## 部署（已自动化）
 
-仓库配置了 GitHub Actions：只要 **push 到 `main` 分支**，就会自动构建并发布到 GitHub Pages，无需手动上传 `dist/`。
+仓库配置了 GitHub Actions：只要 **push 到 `main` 分支**，就会自动构建并发布到 GitHub Pages，无需手动上传 `dist/`。构建前会自动执行内容注入脚本（见上文「内容维护」）。
 
 工作流文件：`.github/workflows/deploy.yml`

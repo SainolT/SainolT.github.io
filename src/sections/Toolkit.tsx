@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { tools, type Tool } from '../data/tools'
+import { siteCopy } from '../data/site'
 import { useReveal } from '../hooks/useReveal'
 import { useLatestRelease } from '../hooks/useLatestRelease'
 import ToolDetail from '../components/ToolDetail'
@@ -90,7 +91,7 @@ export default function Toolkit() {
           </span>
         </h2>
         <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#8A7B6C]">
-          策划工作中沉淀下来的自用小工具，开源在 GitHub，可直接下载使用。
+          {siteCopy.toolkitIntro}
         </p>
       </div>
 

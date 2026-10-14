@@ -7,6 +7,7 @@ import ClickSpark from '../components/ClickSpark'
 import GameDetail from '../components/GameDetail'
 import SiteNav from '../components/SiteNav'
 import { games, type Game } from '../data/games'
+import { siteCopy } from '../data/site'
 
 export default function Home() {
   const [detail, setDetail] = useState<{ game: Game; autoPlay: boolean } | null>(null)
@@ -55,7 +56,7 @@ export default function Home() {
           </a>
         </div>
         <p className="pb-6 text-center text-[11px] tracking-[0.25em] text-[#B4A791]">
-          © 2026 SAINOLT — 本站点由 GitHub Pages 承载
+          {siteCopy.footerNote}
         </p>
       </footer>
     </main>
