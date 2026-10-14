@@ -16,7 +16,7 @@
 
 **改真实内容 = 改私有仓库里对应的 JSON 文件**，推送后到本仓库 Actions 手动跑一次「Deploy to GitHub Pages」（或推任意提交）即可更新网站。JSON 字段格式见私有仓库的 README。
 
-需要一次性配置访问凭证：本仓库 Settings → Secrets and variables → Actions → 新建名为 `CONTENT_TOKEN` 的 Secret，值为能读取私有仓库的 PAT（Fine-grained token 勾选 site-content 的 Contents: Read 权限即可）。未配置时构建自动使用模板内容，不会报错。
+需要一次性配置访问凭证：本仓库 Settings → Secrets and variables → Actions → 新建名为 `CONTENTS_TOKEN` 的 Secret，值为能读取私有仓库的 PAT（Fine-grained token 勾选 site-content 的 Contents: Read 权限即可）。未配置时构建自动使用模板内容，不会报错。
 
 工具箱条目（`src/data/tools.ts`）不在注入范围内——版本号、更新日期、文件大小、详情简介都会在访客浏览时实时读取对应 GitHub 仓库的 Release 和 README，工具侧无需维护任何文案。
 

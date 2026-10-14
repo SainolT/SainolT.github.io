@@ -27,7 +27,7 @@ jobs:
       # 从私有仓库 SainolT/site-content 注入真实内容；未配置 Secret 时自动跳过
       - name: Inject private content
         env:
-          CONTENT_TOKEN: ${{ secrets.CONTENT_TOKEN }}
+          CONTENT_TOKEN: ${{ secrets.CONTENTS_TOKEN }}
         run: node scripts/inject-content.mjs
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
